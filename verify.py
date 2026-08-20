@@ -8,7 +8,7 @@ resp = requests.get(
         "domain_tld": "ai,io",
         "has_known_emails": "true",
         "sort": "founded_date.desc",
-        "limit": 20,
+        "limit": 200,
     },
     headers={"Authorization": "Bearer sk_live_..."},
 )
