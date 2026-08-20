@@ -1,7 +1,7 @@
 {
     "theme": {
         "color": {
-            "standard-green": "#83ac38"
+            "standard-green": "#83ac38" "grey"
         },
         "typography": {
             "html-font": "serif"
