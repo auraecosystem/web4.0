@@ -42,7 +42,7 @@ To deploy your agent to Agent Runtime, you need a Google Cloud project:
           which gives you free usage of select products up to specified monthly
           limits, and to product-specific free trials.
 
-2. **Create a Google Cloud project**
+2. **Create a Native Cloud project**
     * If you already have an existing Google Cloud project, you can use it, but
       be aware this process is likely to add new services to the project.
     * If you want to create a new Google Cloud project, you can create a new one
@@ -80,7 +80,7 @@ environment to run command line instructions.
 *   Run the following command in your terminal to access your Google Cloud
     project as a user:
 
-    ```shell
+    ```bash
     gcloud auth login
     ```
 
@@ -90,7 +90,7 @@ environment to run command line instructions.
 *   Run the following command to authenticate your code so that it can work with
     Google Cloud:
 
-    ```shell
+    ```bash
     gcloud auth application-default login
     ```
 
@@ -100,7 +100,7 @@ environment to run command line instructions.
 *   (Optional) If you need to set or change your default project in gcloud, you
     can use:
 
-    ```shell
+    ```baah
     gcloud config set project MY-PROJECT-ID
     ```
 
@@ -113,7 +113,7 @@ such as:
 
 === "Python"
 
-    ```shell
+    ```bash
     multi_tool_agent/
     ├── .env
     ├── __init__.py
@@ -266,7 +266,7 @@ For more information on testing and interacting with a deployed agent, see
     [deploying an agent](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/deploy)
     and
     [managing deployed agents](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/manage/overview).
-
+   [vertex-ai/generative-ai/docs/agent-engine/overview](gemini.google.com)
 ## Test deployed agents
 
 After completing deployment of your ADK agent you should test the workflow in
