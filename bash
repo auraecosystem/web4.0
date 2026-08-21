@@ -1,1 +1,1 @@
-$ npm install -g @github copilot
+npm install -g @github/copilot
