@@ -136,6 +136,91 @@
       background-color: #334155;
       color: #f8fafc;
     }
+    .search-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 640px;
+}
+
+@media (min-width: 640px) {
+  .search-section {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+/* Multi-Select Dropdown Integration Styles */
+.multi-select-container {
+  position: relative;
+  min-width: 180px;
+}
+
+.multi-select-trigger {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  min-height: 52px;
+  padding: 6px 12px;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background-color: #0f172a;
+  color: #f8fafc;
+  cursor: pointer;
+}
+
+.multi-select-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #0284c7;
+  color: #ffffff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.multi-select-chip span {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.multi-select-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background-color: #1e293b;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  z-index: 60;
+}
+
+.multi-select-container.open .multi-select-dropdown {
+  display: block;
+}
+
+.multi-select-option {
+  padding: 10px 14px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.multi-select-option:hover {
+  background: #334155;
+  color: #f8fafc;
+}
+
+.multi-select-option.selected {
+  background: #0284c7;
+  color: #ffffff;
+}
 
     /* Footer */
     footer {
@@ -174,7 +259,35 @@
       <ul id="suggestions-list" class="suggestions-dropdown" role="listbox" hidden></ul>
     </div>
   </main>
+<main>
+  <div class="search-section">
+    <!-- Multi-Select Category Filter -->
+    <select id="web4-filters" data-placeholder="Filter Categories" multiple data-multi-select>
+      <option value="ipfs" selected>IPFS</option>
+      <option value="did" selected>DIDs</option>
+      <option value="contracts">Smart Contracts</option>
+      <option value="ens">ENS Domains</option>
+      <option value="storage">Decentralized Storage</option>
+    </select>
 
+    <!-- Web4 Search Bar -->
+    <div class="search-container">
+      <div class="search-input-wrapper">
+        <input 
+          type="text" 
+          id="web4-search" 
+          placeholder="Search Web4 decentralized nodes, DID, IPFS..." 
+          autocomplete="off" 
+          aria-expanded="false" 
+          aria-autocomplete="list" 
+          aria-controls="suggestions-list"
+        />
+        <span class="search-spinner" id="search-spinner" hidden></span>
+      </div>
+      <ul id="suggestions-list" class="suggestions-dropdown" role="listbox" hidden></ul>
+    </div>
+  </div>
+</main>
   <footer>
     © 2026 web4
   </footer>
@@ -295,6 +408,78 @@
         searchInput.setAttribute('aria-expanded', 'false');
       }
     });
+    // Initialize Multi-Select Dropdown for Web4 Filters
+document.querySelectorAll('select[data-multi-select]').forEach(select => {
+  select.style.display = 'none';
+
+  const container = document.createElement('div');
+  container.className = 'multi-select-container';
+
+  const trigger = document.createElement('div');
+  trigger.className = 'multi-select-trigger';
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'multi-select-dropdown';
+
+  const placeholder = select.dataset.placeholder || 'Select filters';
+
+  function updateTrigger() {
+    trigger.innerHTML = '';
+    const selectedOptions = Array.from(select.selectedOptions);
+
+    if (selectedOptions.length === 0) {
+      trigger.innerHTML = `<span style="color: #64748b;">${placeholder}</span>`;
+      return;
+    }
+
+    selectedOptions.forEach(opt => {
+      const chip = document.createElement('span');
+      chip.className = 'multi-select-chip';
+      chip.textContent = opt.text;
+
+      const removeBtn = document.createElement('span');
+      removeBtn.innerHTML = '&times;';
+      removeBtn.onclick = (e) => {
+        e.stopPropagation();
+        opt.selected = false;
+        select.dispatchEvent(new Event('change'));
+      };
+
+      chip.appendChild(removeBtn);
+      trigger.appendChild(chip);
+    });
+  }
+
+  Array.from(select.options).forEach(opt => {
+    const item = document.createElement('div');
+    item.className = 'multi-select-option';
+    item.textContent = opt.text;
+    if (opt.selected) item.classList.add('selected');
+
+    item.addEventListener('click', (e) => {
+      e.stopPropagation();
+      opt.selected = !opt.selected;
+      item.classList.toggle('selected', opt.selected);
+      select.dispatchEvent(new Event('change'));
+    });
+
+    dropdown.appendChild(item);
+  });
+
+  trigger.addEventListener('click', () => container.classList.toggle('open'));
+
+  document.addEventListener('click', (e) => {
+    if (!container.contains(e.target)) container.classList.remove('open');
+  });
+
+  select.addEventListener('change', updateTrigger);
+
+  container.appendChild(trigger);
+  container.appendChild(dropdown);
+  select.parentNode.insertBefore(container, select);
+  
+  updateTrigger();
+});
   </script>
 </body>
 </html>
