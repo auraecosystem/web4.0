@@ -1,3 +1,7 @@
+<NavigationView
+        style={{width: 200, height: 50%}}
+        ...
+    />
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 // ...
