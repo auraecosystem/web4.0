@@ -1,0 +1,15 @@
+{
+  "security": {
+    "auth": {
+      "selectedType": "vertex-ai"
+    }
+  },
+  "general": {
+    "defaultModel": "gemini-3.6-flash-pro"
+  },
+  "vertexAi": {
+    "project": "your-gcp-project-id",
+    "location": "us-central1",
+    "baseUrl": "https://us-central1-aiplatform.googleapis.com"
+  }
+}
