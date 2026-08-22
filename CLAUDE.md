@@ -1,3 +1,9 @@
+agent.md
+kills.md
+skills.q
+skills.j
+
+
 🌐 Web4 Documentation Portal
 
 Welcome to the official documentation for the Web4 Ecosystem.
