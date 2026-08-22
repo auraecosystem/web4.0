@@ -1,0 +1,25 @@
+{
+  "selectedAuthType": "gemini-api-key",
+  "theme": "Dracula",
+  "general": {
+    "preferredEditor": "vscode",
+    "vimMode": false,
+    "defaultApprovalMode": "default",
+    "previewFeatures": true
+  },
+  "checkpointing": {
+    "enabled": true
+  },
+  "mcpServers": {
+    "git": {
+      "command": "uvx",
+      "args": ["mcp-server-git"]
+    },
+    "github": {
+      "httpUrl": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "Authorization": "Bearer ${GITHUB_PAT}"
+      }
+    }
+  }
+}
