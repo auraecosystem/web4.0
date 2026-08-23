@@ -1,32 +1,25 @@
-# This is a basic workflow to help you get started with Actions
-
 name: flatpak
 
-# Controls when the workflow will run
 on:
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - run: | 
-          sudo add-apt-repository ppa:flatpak/stable -y && sudo apt install flatpak -y
-          echo "======================================================================"
+      - name: Install Flatpak and add Flathub remote
+        run: |
+          sudo add-apt-repository ppa:flatpak/stable -y
+          sudo apt-get update && sudo apt-get install -y flatpak
           sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-      - run: |
-          cat <<EOF > flatpak.txt
+      - name: Generate package list
+        run: |
+          cat <<'EOF' > flatpak.txt
           org.inkscape.Inkscape
           com.wps.Office
           com.obsproject.Studio
@@ -58,36 +51,28 @@ jobs:
           com.github.tchx84.Flatseal
           com.belmoussaoui.Decoder
           com.belmoussaoui.Obfuscate
-          com.belmoussaoui.Authenticator          
+          com.belmoussaoui.Authenticator
           EOF
-          
-          cat flatpak.txt 
-          
-          
-      - run: |
-          cat flatpak.txt | while read package 
-          do
-            sudo flatpak install flathub "$package" -y
-            echo ""
-            echo ""
-            echo "===================================================================================================="
-            echo "===================================================================================================="
-            echo ""
-            echo ""
-          done
+          cat flatpak.txt
 
+      - name: Install Flatpak packages
+        run: |
+          while IFS= read -r package || [ -n "$package" ]; do
+            # Skip empty lines or comments
+            [ -z "$package" ] && continue
+            echo "::group::Installing $package"
+            sudo flatpak install flathub "$package" -y || echo "Failed to install $package"
+            echo "::endgroup::"
+          done < flatpak.txt
 
-      - run: sudo flatpak list --show-details --verbose
+      - name: List installed Flatpaks
+        run: sudo flatpak list --show-details --verbose
 
-      - run: |
-          cat flatpak.txt | while read package 
-          do
-            sudo flatpak info --show-permissions "$package"
-            echo ""
-            echo ""
-            echo "===================================================================================================="
-            echo "===================================================================================================="
-            echo ""
-            echo ""
-          done
-          
+      - name: Inspect package permissions
+        run: |
+          while IFS= read -r package || [ -n "$package" ]; do
+            [ -z "$package" ] && continue
+            echo "::group::Permissions for $package"
+            sudo flatpak info --show-permissions "$package" || true
+            echo "::endgroup::"
+          done < flatpak.txt
