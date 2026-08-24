@@ -1,8 +1,8 @@
 ---
-.. :agent.md:
-.. :skills.md:
-.. :skills.q:
-.. :skills.j:
+..agent.md:
+..skills.md:
+..skills.q:
+..skills.j:
 ---
 
 🌐 Web4 Documentation Portal
