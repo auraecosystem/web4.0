@@ -1,0 +1,127 @@
+{
+  "@context": ["https://web4.io/contexts/lct.jsonld"],
+  "@type": "web4:LinkedContextToken",
+  "lct_id": "lct:web4:mb32:...",
+  "subject": "did:web4:key:z6Mk...",
+
+  "binding": {
+    "entity_type": "human|ai|society|organization|role|task|resource|device|service|oracle|accumulator|dictionary|hybrid|policy|infrastructure",
+    "public_key": "mb64:coseKey",
+    "hardware_anchor": "eat:mb64:hw:...",
+    "created_at": "2025-10-01T00:00:00Z",
+    "binding_proof": "cose:Sig_structure"
+  },
+
+  "birth_certificate": {
+    "issuing_society": "lct:web4:society:...",
+    "citizen_role": "lct:web4:role:citizen:...",
+    "birth_timestamp": "2025-10-01T00:00:00Z",
+    "birth_witnesses": [
+      "lct:web4:witness:1...",
+      "lct:web4:witness:2...",
+      "lct:web4:witness:3..."
+    ],
+    "genesis_block_hash": "0x...",
+    "birth_context": "nation|platform|network|organization|ecosystem"
+  },
+
+  "mrh": {
+    "bound": [
+      {
+        "lct_id": "lct:web4:hardware:...",
+        "type": "parent|child|sibling",
+        "binding_context": "hardware_sovereignty",
+        "ts": "2025-10-01T00:00:00Z"
+      }
+    ],
+    "paired": [
+      {
+        "lct_id": "lct:web4:role:citizen:...",
+        "pairing_type": "birth_certificate",
+        "permanent": true,
+        "ts": "2025-10-01T00:00:00Z"
+      }
+    ],
+    "witnessing": [
+      {
+        "lct_id": "lct:web4:witness:...",
+        "role": "time|audit|oracle|existence|action|state|quality",
+        "last_attestation": "2025-10-01T00:00:00Z",
+        "witness_count": 42
+      }
+    ],
+    "horizon_depth": 3,
+    "last_updated": "2025-10-01T00:00:00Z"
+  },
+
+  "policy": {
+    "capabilities": [
+      "pairing:initiate",
+      "metering:grant",
+      "write:lct",
+      "witness:attest"
+    ],
+    "constraints": {
+      "region": ["us-west", "eu-central"],
+      "max_rate": 5000,
+      "requires_quorum": true
+    }
+  },
+
+  "t3_tensor": {
+    "talent": 0.85,
+    "training": 0.92,
+    "temperament": 0.78,
+    "sub_dimensions": {
+      "talent": {
+        "analytical_reasoning": 0.90,
+        "creative_problem_solving": 0.80
+      }
+    },
+    "composite_score": 0.85,
+    "last_computed": "2025-10-01T00:00:00Z",
+    "computation_witnesses": ["lct:web4:oracle:trust:..."]
+  },
+
+  "v3_tensor": {
+    "valuation": 0.89,
+    "veracity": 0.91,
+    "validity": 0.76,
+    "sub_dimensions": {
+      "veracity": {
+        "claim_accuracy": 0.93,
+        "reproducibility": 0.88
+      }
+    },
+    "composite_score": 0.85,
+    "last_computed": "2025-10-01T00:00:00Z",
+    "computation_witnesses": ["lct:web4:oracle:value:..."]
+  },
+
+  "attestations": [
+    {
+      "witness": "did:web4:key:z6Mk...",
+      "type": "existence",
+      "claims": {
+        "observed_at": "2025-10-01T00:00:00Z",
+        "method": "blockchain_transaction"
+      },
+      "sig": "cose:ES256:...",
+      "ts": "2025-10-01T00:00:00Z"
+    }
+  ],
+
+  "lineage": [
+    {
+      "parent": "lct:web4:mb32:previous...",
+      "reason": "genesis|rotation|fork|upgrade",
+      "ts": "2025-09-01T00:00:00Z"
+    }
+  ],
+
+  "revocation": {
+    "status": "active",
+    "ts": null,
+    "reason": null
+  }
+}
