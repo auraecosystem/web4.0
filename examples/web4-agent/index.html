@@ -3,38 +3,72 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Web4 AI Agent</title>
+  <title>Web4 AI Agent + LMLM</title>
   <style>
     :root { color-scheme: dark; }
-    body { margin:0; min-height:100vh; display:grid; place-items:center; font-family:system-ui,-apple-system,sans-serif; background:#070a10; color:#f5f7fb; }
-    main { width:min(900px,92vw); padding:32px; border:1px solid #293044; border-radius:24px; background:#101522; box-shadow:0 24px 90px #0008; }
+    body { margin:0; min-height:100vh; font-family:system-ui,-apple-system,sans-serif; background:#070a10; color:#f5f7fb; }
+    main { width:min(1100px,92vw); margin:32px auto; padding:28px; border:1px solid #293044; border-radius:24px; background:#101522; box-shadow:0 24px 90px #0008; }
     h1 { margin:0 0 8px; font-size:clamp(32px,6vw,52px); }
+    h2 { margin:0 0 10px; font-size:20px; }
     p { color:#aeb8ca; line-height:1.6; }
-    .status,.output { margin-top:20px; padding:16px; border-radius:14px; background:#090d16; border:1px solid #222a3b; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:20px; }
+    .card,.status,.output { padding:18px; border-radius:16px; background:#090d16; border:1px solid #222a3b; }
     .status strong { color:#8ee6a8; }
+    iframe { display:block; width:100%; height:688px; border:0; border-radius:12px; background:#fff; }
     button { margin-top:16px; margin-right:8px; border:0; border-radius:12px; padding:13px 18px; font-weight:700; cursor:pointer; }
     button:disabled { opacity:.45; cursor:not-allowed; }
     pre { white-space:pre-wrap; overflow:auto; margin:0; color:#d8e2f0; }
     code { color:#9cdcfe; }
+    .hint { font-size:13px; color:#8490a5; }
+    @media (max-width:800px) { .grid { grid-template-columns:1fr; } iframe { height:688px; } }
   </style>
 </head>
 <body>
 <main>
-  <h1>Web4 AI Agent</h1>
-  <p>A minimal reference application demonstrating identity, capability discovery, agent execution, and verification.</p>
+  <h1>Web4 AI Agent + LMLM</h1>
+  <p>Web4 identity, Jotform agent input, agent execution, and verification in one reference application.</p>
 
   <div class="status">Identity: <strong id="identity">Not connected</strong></div>
   <button id="connect">Connect Web4 Identity</button>
+  <button id="load" disabled>Load Latest Jotform Submission</button>
   <button id="ask" disabled>Ask Agent</button>
-  <div class="output"><pre id="output">Waiting for a Web4 request...</pre></div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>LMLM: Web Agent</h2>
+      <p class="hint">The Jotform agent is embedded below. Its cross-origin iframe cannot be read directly by this page; production submission data should arrive through the webhook endpoint documented in the README.</p>
+      <iframe id="jotform-agent" title="Lmlm: web agent"
+        allowtransparency="true"
+        allow="geolocation; microphone; camera; fullscreen"
+        src="https://agent.jotform.com/01a0786fd0c870008e95b789230166b37b2f?embedMode=iframe&autofocus=0&background=1&shadow=1"
+        frameborder="0" scrolling="no"></iframe>
+    </section>
+
+    <section class="card">
+      <h2>Web4 Agent Runtime</h2>
+      <div class="output"><pre id="output">Connect your Web4 identity, submit the Jotform agent, then load the latest webhook submission.</pre></div>
+    </section>
+  </div>
 </main>
 
+<script src="https://cdn.jotfor.ms/s/umd/eaa5420ac4c/for-form-embed-handler.js"></script>
 <script>
+  window.jotformEmbedHandler(
+    "iframe[id='jotform-agent']",
+    "https://www.jotform.com"
+  );
+
   const identityEl = document.querySelector('#identity');
   const connectBtn = document.querySelector('#connect');
+  const loadBtn = document.querySelector('#load');
   const askBtn = document.querySelector('#ask');
   const output = document.querySelector('#output');
   let identity = null;
+  let latestJotform = null;
+
+  function show(value) {
+    output.textContent = JSON.stringify(value, null, 2);
+  }
 
   connectBtn.onclick = () => {
     identity = {
@@ -43,8 +77,20 @@
       authenticated: true
     };
     identityEl.textContent = identity.did;
+    loadBtn.disabled = false;
     askBtn.disabled = false;
-    output.textContent = JSON.stringify({ event: 'identity.connected', identity }, null, 2);
+    show({ event: 'identity.connected', identity });
+  };
+
+  loadBtn.onclick = async () => {
+    output.textContent = 'Loading latest Jotform submission...';
+    try {
+      const response = await fetch('/api/jotform/latest');
+      latestJotform = await response.json();
+      show({ event: 'jotform.loaded', submission: latestJotform });
+    } catch (error) {
+      show({ error: error.message });
+    }
   };
 
   askBtn.onclick = async () => {
@@ -57,14 +103,15 @@
           protocol: 'web4',
           version: '1.0',
           identity: identity.did,
-          task: 'Explain Web4',
-          capabilities: ['language', 'reasoning', 'decentralized-data']
+          task: 'Process the LMLM Web Agent request and return a verified Web4 response.',
+          capabilities: ['language', 'reasoning', 'multimodal', 'decentralized-data'],
+          input: latestJotform
         })
       });
       const result = await response.json();
-      output.textContent = JSON.stringify(result, null, 2);
+      show(result);
     } catch (error) {
-      output.textContent = JSON.stringify({ error: error.message }, null, 2);
+      show({ error: error.message });
     }
   };
 </script>
