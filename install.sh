@@ -6,3 +6,8 @@ npm install -g @github/copilot
   --flag-switches-begin \
   --enable-features=GeminiBackendMigration,GeminiBinaryMigration,GeminiChatPersistence,GeminiLive,GeminiLuminous,GeminiScreenContextMigration,GeminiUnaryMigration,GeminiUpdatedEligibility,PageActionMenuAuthFlow,ZeroStateSuggestionsWCGD \
   --flag-switches-end
+# Global install
+npm install -g mcporter
+
+# Verify installation
+mcporter --version
