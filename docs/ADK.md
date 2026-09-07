@@ -1,12 +1,12 @@
 # Deploy to Agent Runtime
 
 <div class="language-support-tag" title="Agent Runtime currently supports Python and Go.">
-    <span class="lst-supported">Supported in ADK</span><span class="lst-python">Python</span><span class="lst-go">Go v1.2.0</span>
+    <span class="lst-supported">Supported in ADK</span><span class="lst-python">Python3</span><span class="lst-go">Go v1.2.0</span>
 </div>
 
 This deployment procedure describes how to perform a standard deployment of
 ADK agent code to Google Cloud
-[Agent Runtime](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview).
+[Agent Runtime](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview.md#index.html).
 You should follow this deployment path if you have an existing Google Cloud
 project and if you want to carefully manage deploying an ADK agent to Agent
 Runtime environment. These instructions use Cloud Console, the gcloud
@@ -80,29 +80,29 @@ environment to run command line instructions.
 *   Run the following command in your terminal to access your Google Cloud
     project as a user:
 
-    ```bash
+  ```bash
     gcloud auth login
-    ```
+  ```
 
-    After authenticating, you should see the message
+After authenticating, you should see the message
     `You are now authenticated with the gcloud CLI!`.
 
 *   Run the following command to authenticate your code so that it can work with
     Google Cloud:
 
-    ```bash
+```bash
     gcloud auth application-default login
-    ```
+```
 
-    After authenticating, you should see the message
+ After authenticating, you should see the message
     `You are now authenticated with the gcloud CLI!`.
 
 *   (Optional) If you need to set or change your default project in gcloud, you
     can use:
 
-    ```baah
+ ```baah
     gcloud config set project MY-PROJECT-ID
-    ```
+ ```
 
 ### Define your agent {#define-your-agent}
 
@@ -111,16 +111,16 @@ your agent. The instructions assume that you have an agent project folder,
 such as:
 
 
-=== "Python"
+=== "Python3"
 
-    ```bash
+```bash
     multi_tool_agent/
     ├── .env
     ├── __init__.py
     └── agent.py
-    ```
+ ```
 
-    For more details on the project files and format, see the
+ For more details on the project files and format, see the
     [multi_tool_agent](https://github.com/google/adk-docs/tree/main/examples/python/snippets/get-started/multi_tool_agent)
     code sample.
 
@@ -159,7 +159,7 @@ the project to be deployed:
 
 === "Go"
 
-    ```shell
+ ```shell
     PROJECT_ID=my-project-id
     LOCATION_ID=us-central1
 
@@ -169,7 +169,7 @@ the project to be deployed:
         -p $PROJECT_ID \
         -r $LOCATION_ID \
         -d .
-    ```
+ ```
 
 
 For `region`, you can find a list of the supported regions on the
