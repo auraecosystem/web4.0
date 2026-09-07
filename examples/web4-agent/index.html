@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Web4 AI Agent</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; font-family:system-ui,-apple-system,sans-serif; background:#070a10; color:#f5f7fb; }
+    main { width:min(900px,92vw); padding:32px; border:1px solid #293044; border-radius:24px; background:#101522; box-shadow:0 24px 90px #0008; }
+    h1 { margin:0 0 8px; font-size:clamp(32px,6vw,52px); }
+    p { color:#aeb8ca; line-height:1.6; }
+    .status,.output { margin-top:20px; padding:16px; border-radius:14px; background:#090d16; border:1px solid #222a3b; }
+    .status strong { color:#8ee6a8; }
+    button { margin-top:16px; margin-right:8px; border:0; border-radius:12px; padding:13px 18px; font-weight:700; cursor:pointer; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    pre { white-space:pre-wrap; overflow:auto; margin:0; color:#d8e2f0; }
+    code { color:#9cdcfe; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Web4 AI Agent</h1>
+  <p>A minimal reference application demonstrating identity, capability discovery, agent execution, and verification.</p>
+
+  <div class="status">Identity: <strong id="identity">Not connected</strong></div>
+  <button id="connect">Connect Web4 Identity</button>
+  <button id="ask" disabled>Ask Agent</button>
+  <div class="output"><pre id="output">Waiting for a Web4 request...</pre></div>
+</main>
+
+<script>
+  const identityEl = document.querySelector('#identity');
+  const connectBtn = document.querySelector('#connect');
+  const askBtn = document.querySelector('#ask');
+  const output = document.querySelector('#output');
+  let identity = null;
+
+  connectBtn.onclick = () => {
+    identity = {
+      did: 'did:web4:example:user',
+      network: 'web4',
+      authenticated: true
+    };
+    identityEl.textContent = identity.did;
+    askBtn.disabled = false;
+    output.textContent = JSON.stringify({ event: 'identity.connected', identity }, null, 2);
+  };
+
+  askBtn.onclick = async () => {
+    output.textContent = 'Agent is processing...';
+    try {
+      const response = await fetch('/api/web4/agent', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          protocol: 'web4',
+          version: '1.0',
+          identity: identity.did,
+          task: 'Explain Web4',
+          capabilities: ['language', 'reasoning', 'decentralized-data']
+        })
+      });
+      const result = await response.json();
+      output.textContent = JSON.stringify(result, null, 2);
+    } catch (error) {
+      output.textContent = JSON.stringify({ error: error.message }, null, 2);
+    }
+  };
+</script>
+</body>
+</html>
