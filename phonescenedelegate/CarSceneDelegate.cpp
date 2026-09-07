@@ -19,5 +19,3 @@
   template.trailingNavigationBarButtons = @[];
   return template;
 }
-
-
