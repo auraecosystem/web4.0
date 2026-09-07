@@ -1,12 +1,28 @@
 # Web4 AI Agent + LMLM Example
 
-A dependency-free reference implementation for the `auraecosystem/web4.0` repository. It combines a Web4 agent runtime with the supplied Jotform LMLM Web Agent interface.
+A dependency-free reference implementation for the `auraecosystem/web4.0` repository. It combines a Web4 agent runtime with the supplied Jotform LMLM Web Agent and its presentation-mode agent.
 
 ## Architecture
 
-`Web4 Identity -> LMLM/Jotform Input -> Jotform Webhook -> Web4 Agent -> Result -> Verification`
+`Web4 Identity -> LMLM Web Agent / Presentation Agent -> Jotform Webhook -> Web4 Agent -> Result -> Verification`
 
-The Jotform agent is embedded in `index.html` using the supplied iframe. Because the Jotform agent runs on a different origin, the browser cannot directly inspect its submitted fields. The reliable integration point is the Jotform webhook endpoint exposed by this example.
+The main LMLM agent and presentation agent are embedded in `index.html`. Because the Jotform agents run on a different origin, the browser cannot directly inspect their submitted fields. The reliable integration point for submission data is the Jotform webhook endpoint exposed by this example.
+
+## LMLM agents
+
+Main Web Agent:
+
+```text
+https://agent.jotform.com/01a0786fd0c870008e95b789230166b37b2f?embedMode=iframe&autofocus=0&background=1&shadow=1
+```
+
+Presentation Agent:
+
+```text
+https://agent.jotform.com/01a0786fd0c870008e95b789230166b37b2f/presentation/01a07bc6e33870018e0aa1df7041c68085ea?embedMode=iframe&autofocus=0&isAutoplayEnabled=0&platform=presentationagent
+```
+
+The presentation-agent embed was derived from `examples/web4/rsc/forum/kimi2_6_review.md` and is now wired into the runnable Web4 example.
 
 ## Run locally
 
@@ -24,12 +40,6 @@ http://localhost:8787
 ```
 
 ## Jotform integration
-
-The embedded agent is:
-
-```text
-https://agent.jotform.com/01a0786fd0c870008e95b789230166b37b2f?embedMode=iframe&autofocus=0&background=1&shadow=1
-```
 
 Configure the Jotform app's webhook destination to the publicly reachable URL:
 
