@@ -1,5 +1,5 @@
 {
-  "@context": ["https://web4.io/contexts/lct.jsonld"],
+  "@context": ["https://web4.0/contexts/lct.jsonld"],
   "@type": "web4:LinkedContextToken",
   "lct_id": "lct:web4:mb32:...",
   "subject": "did:web4:key:z6Mk...",
