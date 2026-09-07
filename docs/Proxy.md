@@ -1,5 +1,5 @@
-# Snippet Code
-
+[# Snippet Code
+](g4.proxy-man.cpm)
 ## 1. What's it?
 
 A collection of snippet Javascript code for the Scripting Tool.
