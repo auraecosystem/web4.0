@@ -1,0 +1,16 @@
+version: 2
+
+# Explicitly set the OS and Python versions
+build:
+  os: "ubuntu-24.04"
+  tools:
+    nodejs: "20"
+    python: "3.12"
+# Explicitly set the version of Python and its requirements
+python:
+  install:
+    - requirements: docs/requirements.txt
+    # Defining the exact version will make sure things don't brea
+ sphinx==5.3.0
+sphinx_rtd_theme==1.1.1
+sphinx-notfound-page==1.0.2
