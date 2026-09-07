@@ -1,0 +1,10 @@
+{
+  "@context": ["https://web4.0/contexts/law.jsonld"],
+  "type": "Web4LawDataset",
+  "law_id": "web4://law/society/1.2.0",
+  "hash": "sha256-...",
+  "norms": [{"norm_id":"LAW-ATP-LIMIT","selector":"r6.resource.atp","op":"<=","value":100}],
+  "procedures": [{"procedure_id":"PROC-WIT-3","requires_witnesses":3}],
+  "interpretations": [{"interpretation_id":"INT-42","replaces":"INT-41","reason":"edge case fix"}],
+  "r6Bindings": ["web4://schemas/r6-rules-v1"]
+}
