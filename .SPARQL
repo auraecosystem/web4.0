@@ -1,0 +1,15 @@
+@prefix web4: <https://web4.io/ontology#> .
+@prefix lct:  <https://web4.io/lct/> .
+
+# Genesis pairing
+lct:entity web4:pairedWith lct:roleCitizen .
+lct:entity web4:memberOf   lct:societyRoot .
+
+# Authority & Law
+lct:societyRoot web4:hasAuthority lct:authorityRole .
+lct:societyRoot web4:hasLawOracle lct:lawOracle .
+lct:lawOracle   web4:publishes    lct:lawDatasetV120 .
+
+# Delegation
+lct:authorityRole web4:delegatesTo lct:subAuthorityRole .
+lct:subAuthorityRole web4:scope "finance" .
