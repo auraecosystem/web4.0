@@ -3,6 +3,7 @@ FROM nginx:alpine
 LABEL org.opencontainers.image.title="Web4.0"
 LABEL org.opencontainers.image.description="Web4.0 semantic dashboard"
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY site/ /usr/share/nginx/html/
 
 EXPOSE 80
