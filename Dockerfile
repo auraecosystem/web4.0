@@ -1,14 +1,12 @@
-ARG VARIANT="16"
-FROM mcr.microsoft.com/devcontainers/javascript-node:1-${VARIANT}
+FROM nginx:alpine
 
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends bundler
+LABEL org.opencontainers.image.title="Web4.0"
+LABEL org.opencontainers.image.description="Web4.0 semantic dashboard"
 
-# [Optional] Uncomment if you want to install an additional version
-#  of node using nvm
-# ARG EXTRA_NODE_VERSION=18
-# RUN su node -c "source /usr/local/share/nvm/nvm.sh \
-#    && nvm install ${EXTRA_NODE_VERSION}"
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY site/ /usr/share/nginx/html/
 
-COPY ./script-in-your-repo.sh /tmp/scripts/script-in-codespace.sh
-RUN apt-get update && bash /tmp/scripts/script-in-codespace.sh
+EXPOSE 80
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --spider --quiet http://127.0.0.1/ || exit 1
