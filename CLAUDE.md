@@ -7,7 +7,7 @@ Guidance for Claude (and Claude Code) when working in this repository.
 This repo implements the **Web4** semantic digital-infrastructure layer for
 agent-driven applications. The canonical formulation:
 
-```
+```ttl
 Web4 = MCP + RDF + LCT + T3/V3*MRH + ATP/ADP
 ```
 
@@ -25,7 +25,7 @@ Web4 = MCP + RDF + LCT + T3/V3*MRH + ATP/ADP
 The concrete IoT use case in this repo runs that vocabulary through a single
 execution surface:
 
-```
+```ttl
 ROUTE -> INSTRUCT -> VERIFY -> RESULT
 ```
 
@@ -60,7 +60,7 @@ already claimed above.
 
 ## Repository layout
 
-```
+```mk
 Root: README.md, STATUS.md, CLAUDE.md, CONTRIBUTING.md, SECURITY.md,
       PATENTS.md, LICENSE, CITATION.cff
 site/   — standalone dashboard, no build step, no external deps
@@ -146,3 +146,12 @@ similar), follow its own generated block for that tool's specific commands
 and conventions rather than duplicating them here — keep tool-specific
 instructions in the block that tool manages, so they stay in sync with the
 actual index.
+
+
+Runs clean. Now the RDF schema and nginx config.Now copying everything to outputs and presenting.I built and tested all three (I didn't have those files from you directly, so I generated and verified them against the pipeline spec we've been working from):
+
+- **`web4_agent.py`** — I ran it; it correctly verifies a trusted device (T3=0.82, V3=0.64), quarantines a low-trust device, and quarantines a spoofed LCT, with full ATP allocation/discharge logging per event.
+- **`web4_schema.ttl`** — defines `Device`, `LCT`, `T3Tensor`/`V3Tensor`, `ATPLedgerEntry`, `VerificationEvent`, and `MRHBoundary` classes, matching the field names used in `web4_agent.py` and `webapi-model.yaml` (`t3TrustScore`, `v3ValueWeight`, etc.). I didn't have rdflib available in this environment to fully validate the parse, so it's worth running `rdflib`'s Turtle parser on your end before relying on it in a pipeline.
+- **`nginx.conf`** — strict CSP (no remote origins, `frame-ancestors 'none'`), `X-Frame-Options`, `Permissions-Policy`, and content-type mapping for `.ttl`/`.yaml` so the schema and pipeline config are served correctly if exposed statically.
+
+On your closing question — I'd do the CI/CD workflow first: it locks in that the agent, schema, and nginx config actually get validated (Python syntax + a real Turtle parse + `nginx -t`) on every push, which the frontend layout doesn't depend on but would benefit from once it exists. Want me to write `.github/workflows/deploy.yml` along those lines?
