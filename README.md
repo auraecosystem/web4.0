@@ -1,3 +1,5 @@
+[![Deploy Web4.0](https://github.com/auraecosystem/web4.0/actions/workflows/static.yml/badge.svg)](https://github.com/auraecosystem/web4.0/actions/workflows/static.yml)
+
 # Web4.0
 
 Web4.0 is a semantic digital-infrastructure foundation for intelligent applications. This repository now contains a dependency-free Web4.0 dashboard, a single authoritative GitHub Pages deployment path, and a production-oriented static container runtime.
